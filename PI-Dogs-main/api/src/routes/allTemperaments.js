@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = Router();
-const getAllTemperaments = require("../handlers/AllTemperamentsHandler");
+const getAllTemperamentsHandler = require("../handlers/AllTemperamentsHandler");
 
 //* GET ALL TEMPERAMENTS
-router.use("/temperaments", getAllTemperaments);
+router.use("/", getAllTemperamentsHandler);
 
 module.exports = router;

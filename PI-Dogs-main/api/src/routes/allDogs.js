@@ -1,15 +1,16 @@
 const { Router } = require('express');
+const AllDogsHandler = require('../handlers/AllDogsHandler');
+const PostDogsHandler = require('../handlers/PostDogsHandler');
+const GetDogByIdHandler = require('../handlers/GetDogByIdHandler');
+const GetDogsByNameHandler = require('../handlers/GetDogsByNameHandler');
 const router = Router();
-const getAllDogs = require('../controllers/getAllDogs');
-
-//*TODO: importar los handlers
 
 //* GET ALL DOGS
-router.get("/dogs", getAllDogs);
-router.get("/:idBreed");
-router.get("/dogs/name?=");
+router.get("/", AllDogsHandler);
+router.get("/searchByName", GetDogsByNameHandler);
+router.get("/:id", GetDogByIdHandler);
 
 //* POST DOGS
-router.post("/dogs");
+router.post("/", PostDogsHandler);
 
 module.exports = router;

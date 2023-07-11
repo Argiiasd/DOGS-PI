@@ -1,22 +1,38 @@
 const axios = require('axios');
-const { API_KEY, API_URL } = process.env;
+const { API_KEY } = process.env;
+const getDogsFromDb = require('./getDogsFromDb');
+const URL = "https://api.thedogapi.com/v1/breeds/";
 
 const getAllDogs = async () => {
-    const response = await axios(`${API_URL}?api_key=${API_KEY}`);
-    const allDogs = await response.data.map((dog) => {
+    const response = await axios(`${URL}?api_key=${API_KEY}`);
+    const apiDogs = response.data.map((dog) => {
         return {
             id: dog.id,
-            image: dog.image.url,
+            image: dog.image?.url,
             name: dog.name,
-            height: dog.height.metric,
-            weight: dog.weight.metric,
+            height: dog.height?.metric,
+            weight: dog.weight?.metric,
             life_span: dog.life_span,
+            temperament: dog.temperament,
         }
     })
+    const dbDogs = await getDogsFromDb();
+    const dbDogsMapped = dbDogs.map((dog) => {
+        return {
+            id: dog.id,
+            image: dog.image,
+            name: dog.name,
+            height: dog.height,
+            weight: dog.weight,
+            life_span: dog.life_span,
+            temperament: dog.temperament,
+        }
+    })
+    const allDogs = [...dbDogsMapped, ...apiDogs];
     if (allDogs.length === 0) {
-        throw new Error('No hay resultados');
+        throw new Error("No hay resultados")
     }
-    return response.status(200).json(allDogs);
+    return allDogs;
 }
 
 module.exports = getAllDogs;
