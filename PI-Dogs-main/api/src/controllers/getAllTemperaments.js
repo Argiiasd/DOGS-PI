@@ -47,6 +47,7 @@ const subirTemps = async() => {
         }
     })
     await Temperament.bulkCreate(temperamentos);
+    console.log("Temperamentos subidos a la base de datos");
 }
 
 module.exports = extractAllTemps;
