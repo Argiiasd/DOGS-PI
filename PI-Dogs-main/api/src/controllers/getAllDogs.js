@@ -28,9 +28,9 @@ const getAllDogs = async () => {
             temperament: dog.temperament,
         }
     })
-    const allDogs = [...dbDogsMapped, ...apiDogs];
+    const allDogs = [...apiDogs, ...dbDogsMapped];
     if (allDogs.length === 0) {
-        throw new Error("No hay resultados")
+        throw new Error("No results found");
     }
     return allDogs;
 }
