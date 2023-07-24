@@ -46,7 +46,6 @@ const Home = () => {
         dispatch(resetFilters());
         setOrder("");
         setCurrentPage(1);
-
     }
 
     const currentDog = dogs.slice(indexFirstDog, indexLastDog);//corta la cantidad de perros que necesito mostrar según los indices a partir del estado global

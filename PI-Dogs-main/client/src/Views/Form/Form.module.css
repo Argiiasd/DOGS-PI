@@ -19,6 +19,8 @@
 
 .BackButtonContainer {
   background-color: #165294;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
 }
 
 .BackButton {
@@ -68,6 +70,7 @@
   font-size: 1.3rem;
   height: 1rem;
   width: 20rem;
+  margin-top: 5px;
 }
 
 .FormError {
@@ -90,3 +93,18 @@
   transform: scale(1.1);
   cursor: pointer;
 }
+
+.FormResetButton {
+  background: none;
+  background-color: #165294;
+  color: white;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.FormResetButton:hover {
+  background-color: #f90e0e;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getAllDogs } from "../../Redux/actions";
 import validate from "./Validation";
@@ -8,13 +8,14 @@ import styles from "./Form.module.css";
 
 const Form = () => {
     const dispatch = useDispatch();
+    const temperaments = useSelector((state) => state.tempsFilter);
     const [formData, setFormData] = useState({
         image: "",
         name: "",
         weight: "",
         height: "",
         life_span: "",
-        temperament: ""
+        temps: []
     });
 
     const [successMessagePosting, setSuccessMessagePosting] = useState("");
@@ -31,6 +32,7 @@ const Form = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(formData);
 
         try {
             const response = await axios.post("http://localhost:3001/dogs", formData);
@@ -42,13 +44,15 @@ const Form = () => {
                 weight: "",
                 height: "",
                 life_span: "",
-                temperament: ""
+                temps: []
             })
+
             dispatch(getAllDogs());
-            console.log("Perro posteado", newDog);
+            console.log("Dog Posted", newDog);
         } catch (error) {
             setErrorMessagePosting("Something went wrong");
-            console.error("Error al enviar los datos del formulario", error);
+            console.error(error);
+
         }
     };
 
@@ -59,6 +63,24 @@ const Form = () => {
         });
         setFormErrors(validate({ ...formData, [event.target.name]: event.target.value }));
     };
+
+
+    const handleChangeTemps = (event) => {
+        let selectedTemp = event.target.value;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            temps: [...prevFormData.temps, selectedTemp]
+        }));
+        console.log(formData.temps);
+    };
+
+    const handleResetTemps = (event) => {
+        event.preventDefault();
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            temps: []
+        }));
+    }
 
     return (
         <div className={styles.FormContainer}>
@@ -91,8 +113,24 @@ const Form = () => {
                     <input className={styles.FormInput} type="text" name="life_span" onChange={handleChange} />
                     {formErrors && <p className={styles.FormError}>{formErrors.life_span}</p>}
 
-                    <label className={styles.FormLabel} htmlFor="temps">Temperament:</label>
-                    <input className={styles.FormInput} type="text" name="temps" onChange={handleChange} />
+                    <label className={styles.FormLabel} htmlFor="temps">Temperaments:</label>
+                    <select className={styles.FormSelect} onChange={handleChangeTemps}>
+                        <option disabled>Select Temperaments</option>
+                        {temperaments.map((temp) => (
+                            <option key={temp} value={temp}>
+                                {temp}
+                            </option>
+                        ))}
+                    </select>
+
+                    <input
+                        className={styles.FormInput}
+                        type="text"
+                        name="temps"
+                        value={formData.temps.join(", ")}
+                        readOnly
+                    />
+                    <button className={styles.FormResetButton} onClick={handleResetTemps}>Reset selection</button>
                     {formErrors && <p className={styles.FormError}>{formErrors.temps}</p>}
 
                     <button className={styles.FormButton} type="submit" disabled={Object.keys(formErrors).length !== 0}>Submit</button>

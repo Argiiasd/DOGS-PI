@@ -7,8 +7,7 @@ function validate(formData) {
     const errors = {};
     if (!formData.image) {
         errors.image = 'Image is required';
-    }
-    if (!isValidImageURL(formData.image)) {
+    } else if (!isValidImageURL(formData.image)) {
         errors.image = 'Invalid image URL. Must contain .jpeg, .jpg, .gif, .png, or .svg';
     }
 
@@ -25,12 +24,13 @@ function validate(formData) {
     }
 
     if (!formData.life_span) {
-        errors.life_span = 'Life_span is required';
+        errors.life_span = 'Life span is required';
     }
 
     if (!formData.temps) {
-        errors.temps = 'Temperament is required';
+        errors.temperament = 'Temperament is required';
     }
+
     return errors;
 }
 
