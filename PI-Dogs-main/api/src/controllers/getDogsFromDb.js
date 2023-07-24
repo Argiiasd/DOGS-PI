@@ -1,15 +1,14 @@
 const {Dog, Temperament} = require('../db')
 
 const getDogsFromDb = async () => {
-    const dogs = await Dog.findAll({
+    let dogs = await Dog.findAll({
         include: {
-            model: Temperament, 
-            attributes: ["name"], 
-            through: {
-                attributes: [],
-            }
-        }
+            model: Temperament,
+            through: { attributes: [] },
+            attributes: ["name"],
+          },
     })
+    
     return dogs;
 }
 

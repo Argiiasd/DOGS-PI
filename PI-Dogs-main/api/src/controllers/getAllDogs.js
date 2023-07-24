@@ -25,9 +25,9 @@ const getAllDogs = async () => {
             height: dog.height,
             weight: dog.weight,
             life_span: dog.life_span,
-            temperament: dog.temperament,
-        }
-    })
+            temperament: dog.Temperaments.map((temperament) => temperament.name).join(", "),
+        };
+    });
     const allDogs = [...apiDogs, ...dbDogsMapped];
     if (allDogs.length === 0) {
         throw new Error("No results found");

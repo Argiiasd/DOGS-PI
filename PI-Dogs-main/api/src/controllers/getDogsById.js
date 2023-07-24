@@ -16,7 +16,7 @@ const getDogById = async (id) => {
         height: dog.height,
         weight: dog.weight,
         life_span: dog.life_span,
-        temperament: dog.temperament,
+        temperament: !dog.temperament ? "not available" : dog.temperament
     }
 };
 

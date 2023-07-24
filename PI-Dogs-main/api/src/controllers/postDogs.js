@@ -3,15 +3,25 @@ const { Dog, Temperament } = require('../db');
 const createDog = async (image, name, height, weight, life_span, temps) => {
     const newDog = await Dog.create({image, name, height, weight, life_span});
 
-    const aux = await Temperament.findAll({where: {
-        name: temps
-    }});
+    for (const temp of temps) {
+        const temperament = await Temperament.findOne({where: {
+            name: temp
+        }});
 
-    if(aux.length > 0){
-        await newDog.setTemperaments(aux);
+        if (temperament) {
+            await newDog.addTemperament(temperament);
+        }
     }
 
-    return newDog;
+    let dog = await Dog.findByPk(newDog.id);
+    let dogTemperaments = await dog.getTemperaments();
+    let temperamentsNames = dogTemperaments.map((dogTemperament) => {
+        return dogTemperament.name;
+    })
+
+    return {...dog.dataValues, temperament: temperamentsNames};
 }
 
 module.exports = createDog;
+
+// const aux2 = aux[0].dataValues.id;
